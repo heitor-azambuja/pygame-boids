@@ -1,4 +1,3 @@
-from turtle import color
 import pygame as pg
 import random as rng
 from globals import *
