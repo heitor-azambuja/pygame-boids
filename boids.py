@@ -70,6 +70,11 @@ class Boid(pg.sprite.Sprite):
             #  update boid velocity
             self.velocity += (separation * SEPARATION_MULTIPLIER) + (alignment * ALIGNMENT_MULTIPLIER) + (cohesion * COHESION_MULTIPLIER)
 
+            if BOID_FOLLOW_BEHAVIOR == FOLLOW_MOUSE:
+                mouse_pos = Vector2(pg.mouse.get_pos())
+                pos_diff = mouse_pos - center
+                self.velocity += (pos_diff * GLOBAL_GOAL_MULTIPLIER)
+
         #  limit velocity
         if self.velocity.length() > MAX_SPEED:
             self.velocity = self.velocity.normalize() * MAX_SPEED
