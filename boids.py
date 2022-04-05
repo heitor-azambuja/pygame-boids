@@ -8,19 +8,21 @@ IMAGE = pg.image.load('sprites/boid.png')
 
 class Boid(pg.sprite.Sprite):
 
-    def __init__(self, position, velocity, color):
+    def __init__(self, position, velocity, group):
         pg.sprite.Sprite.__init__(self)
         self.radius = VISION_RANGE
         self.velocity = velocity
         self.image = IMAGE
-        self.color = color
+        # self.color = color
         self.rect = self.image.get_rect(center=position)
+        self.group = group
+        self.color = pg.Color(SPECIES_COLOR[group])
 
         # set image color
         for x in range(self.image.get_width()):
             for y in range(self.image.get_height()):
-                color.a = self.image.get_at((x, y)).a  # Preserve the alpha value.
-                self.image.set_at((x, y), color)  # Set the color of the pixel.
+                self.color.a = self.image.get_at((x, y)).a  # Preserve the alpha value.
+                self.image.set_at((x, y), self.color)  # Set the color of the pixel.
         self.colored_image = self.image.copy()   # Save the colored image.
 
         self.rotate()
@@ -46,6 +48,12 @@ class Boid(pg.sprite.Sprite):
                     neighbor_center = Vector2(neighbor.rect.center) 
                     
                     pos_diff = neighbor_center - center
+                    
+                    #  Check neighbor's species
+                    if neighbor.group != self.group:
+                        #  If from different species, intensify separation rule
+                        separation -= (SPECIES_SEPARATION_MULTIPLIER * pos_diff)
+                    
                     if pos_diff.length() < SEPARATION_THRESHOLD:
                         separation -= pos_diff
 

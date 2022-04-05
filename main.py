@@ -22,10 +22,13 @@ def main():
     #  Generate boids
     boids_group = pg.sprite.Group()
     for _ in range(BOIDS_AMOUNT):
+        group = rng.randint(0, SPECIES_AMOUNT - 1)
         boid = Boid(
             position=(rng.random() * WIDTH, rng.random() * HEIGHT), 
             velocity=pg.math.Vector2(rng.random() - 0.5, rng.random() - 0.5) * MAX_SPEED,
-            color=pg.Color(rng.randint(0, 200), rng.randint(200, 255), 0)
+            # color=pg.Color(rng.randint(0, 200), rng.randint(200, 255), 0),
+            # color=pg.Color(200, group * (255 // SPECIES_AMOUNT), group * (255 // SPECIES_AMOUNT)),
+            group=group
         )
         boids_group.add(boid)
 

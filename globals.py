@@ -14,3 +14,19 @@ SEPARATION_THRESHOLD = 25
 SEPARATION_MULTIPLIER = 0.1
 ALIGNMENT_MULTIPLIER = 0.09
 COHESION_MULTIPLIER = 0.02
+
+SPECIES_AMOUNT = 3
+SPECIES_SEPARATION_MULTIPLIER = 0.5
+SPECIES_COLOR = [
+    (255,0,0),  # Red
+    (0,255,0),  # Green
+    (0,0,255),  # Blue
+    (255,255,0),  # Yellow
+    (255,0,255),  # Purple
+    (0,255,255),  # Cyan
+    (255,255,255),  # White
+    (0,0,0),  # Black
+    (127,127,127), # Gray
+    (255,127,0),  # Orange
+    (0,255,127),  # Teal
+]
