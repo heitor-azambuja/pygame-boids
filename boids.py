@@ -27,6 +27,9 @@ class Boid(pg.sprite.Sprite):
 
         self.rotate()
 
+        if BOID_FOLLOW_BEHAVIOUR == FOLLOW_PATH_LIST:
+            self.path_index = 0
+
 
     def rotate(self):
         self.image = pg.transform.rotate(self.colored_image, -self.velocity.normalize().as_polar()[1])
@@ -70,9 +73,17 @@ class Boid(pg.sprite.Sprite):
             #  update boid velocity
             self.velocity += (separation * SEPARATION_MULTIPLIER) + (alignment * ALIGNMENT_MULTIPLIER) + (cohesion * COHESION_MULTIPLIER)
 
-            if BOID_FOLLOW_BEHAVIOR == FOLLOW_MOUSE:
+            if BOID_FOLLOW_BEHAVIOUR == FOLLOW_MOUSE:
                 mouse_pos = Vector2(pg.mouse.get_pos())
                 pos_diff = mouse_pos - center
+                self.velocity += (pos_diff * GLOBAL_GOAL_MULTIPLIER)
+            elif BOID_FOLLOW_BEHAVIOUR == FOLLOW_PATH_LIST:
+                goal_pos = Vector2(PATH_LIST[self.path_index])
+                pos_diff = goal_pos - center
+                if pos_diff.length() <= GLOAL_REACH_THRESHOLD:
+                    self.path_index += 1
+                    if self.path_index >= len(PATH_LIST):
+                        self.path_index = 0
                 self.velocity += (pos_diff * GLOBAL_GOAL_MULTIPLIER)
 
         #  limit velocity
