@@ -39,6 +39,11 @@ def main():
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 running = False
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_r:
+                    main()
+                if event.key == pg.K_q:
+                    running = False
 
         # Update
         for boid in boids_group:
@@ -47,6 +52,11 @@ def main():
         # Draw
         screen.blit(background, (0, 0))
         # screen.blit(bg, (0, 0))
+        #  Mark goals for pathfinding
+        if BOID_FOLLOW_BEHAVIOUR == FOLLOW_PATH_LIST:
+            for i in range(len(PATH_LIST)):
+                pg.draw.circle(screen, pg.Color(GOAL_COLOR), PATH_LIST[i], GLOAL_REACH_THRESHOLD)
+
         
         boids_group.draw(screen)
         pg.display.flip()

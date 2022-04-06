@@ -54,7 +54,7 @@ class Boid(pg.sprite.Sprite):
                     
                     #  Check neighbor's species
                     if neighbor.group != self.group:
-                        #  If from different species, intensify separation rule
+                        #  If from different species, move on the oposite direction
                         separation -= (SPECIES_SEPARATION_MULTIPLIER * pos_diff)
                     
                     if pos_diff.length() < SEPARATION_THRESHOLD:
@@ -73,6 +73,7 @@ class Boid(pg.sprite.Sprite):
             #  update boid velocity
             self.velocity += (separation * SEPARATION_MULTIPLIER) + (alignment * ALIGNMENT_MULTIPLIER) + (cohesion * COHESION_MULTIPLIER)
 
+            #  Pathfinding behaviour
             if BOID_FOLLOW_BEHAVIOUR == FOLLOW_MOUSE:
                 mouse_pos = Vector2(pg.mouse.get_pos())
                 pos_diff = mouse_pos - center
