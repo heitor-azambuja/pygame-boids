@@ -11,13 +11,13 @@ There is also a species separation rule. Species are represented by the boid col
 Boids can move in three different ways, exemplified by the gifs below.
 
 Unbounded movevment. There is no positional goal, boids only move according to the three basic rules and species rule.
-![Imgur](https://imgur.com/xi1LAgy.gif)
+![](https://github.com/heitor-azambuja/huge-gifs/blob/main/boids-unbound.gif)
 
 Mouse following. Boids are attracted to the mouse cursor position.
-![Imgur](https://imgur.com/h51uFMB.gif)
+![](https://github.com/heitor-azambuja/huge-gifs/blob/main/boids-follow-mouse.gif)
 
-Boids path following. Boids move sequentially through a list of predefined goal positions, represented by the blue circles.
-![Imgur](https://imgur.com/3y9zhzZ.gif)
+Boids path following. Boids move sequentially through a list of predefined goal positions, represented by blue circles on the background.
+![](https://github.com/heitor-azambuja/huge-gifs/blob/main/boids-follow-path-list.gif)
 
 Read the tutorial aboud the implementation on [thrivingant.com](https://www.thrivingant.com) (work in progess)
 
