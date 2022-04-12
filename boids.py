@@ -14,8 +14,8 @@ class Boid(pg.sprite.Sprite):
         self.velocity = velocity
         self.image = IMAGE
         # self.color = color
-        self.rect = self.image.get_rect(center=position)
         self.group = group
+        self.rect = self.image.get_rect(center=position)
         self.color = pg.Color(SPECIES_COLOR[group])
 
         # set image color
@@ -40,6 +40,7 @@ class Boid(pg.sprite.Sprite):
         separation = Vector2(0, 0)
         alignment = Vector2(0, 0)
         cohesion = Vector2(0, 0)
+        species_separation = Vector2(0, 0)
         center = Vector2(self.rect.center)
 
         neighbors = pg.sprite.spritecollide(self, all_others, False, pg.sprite.collide_circle)
@@ -52,13 +53,16 @@ class Boid(pg.sprite.Sprite):
                     
                     pos_diff = neighbor_center - center
                     
+                    if pos_diff.length() < SEPARATION_THRESHOLD:
+                        separation -= pos_diff
+                    
                     #  Check neighbor's species
                     if neighbor.group != self.group:
                         #  If from different species, move on the oposite direction
-                        separation -= (SPECIES_SEPARATION_MULTIPLIER * pos_diff)
-                    
-                    if pos_diff.length() < SEPARATION_THRESHOLD:
-                        separation -= pos_diff
+                        species_separation -= pos_diff
+                        # if SPECIES_INDEPENDENCE:
+                        #     # If species independence is enabled, skip regular rules for boids of other species
+                        #     continue
 
                     alignment += neighbor.velocity
 
@@ -72,6 +76,7 @@ class Boid(pg.sprite.Sprite):
 
             #  update boid velocity
             self.velocity += (separation * SEPARATION_MULTIPLIER) + (alignment * ALIGNMENT_MULTIPLIER) + (cohesion * COHESION_MULTIPLIER)
+            self.velocity += (species_separation * SPECIES_SEPARATION_MULTIPLIER)
 
             #  Pathfinding behaviour
             if BOID_FOLLOW_BEHAVIOUR == FOLLOW_MOUSE:
@@ -86,6 +91,9 @@ class Boid(pg.sprite.Sprite):
                     if self.path_index >= len(PATH_LIST):
                         self.path_index = 0
                 self.velocity += (pos_diff * GLOBAL_GOAL_MULTIPLIER)
+
+        #  Velocity loss
+        self.velocity -= self.velocity.normalize() * VELOCITY_LOSS
 
         #  limit velocity
         if self.velocity.length() > MAX_SPEED:

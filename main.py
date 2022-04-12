@@ -2,8 +2,12 @@ import pygame as pg
 import random as rng
 from globals import *
 
-# rng.seed(SEED)
+if SEED:
+    rng.seed(SEED)
+
 clock = pg.time.Clock()
+
+# # Set background image
 # bg = pg.image.load('sprites/background.jpg')
 # bg = pg.transform.scale(bg, (WIDTH, HEIGHT))
 
@@ -25,10 +29,9 @@ def main():
         group = rng.randint(0, SPECIES_AMOUNT - 1)
         boid = Boid(
             position=(rng.random() * WIDTH, rng.random() * HEIGHT), 
-            velocity=pg.math.Vector2(rng.random() - 0.5, rng.random() - 0.5) * MAX_SPEED,
-            # color=pg.Color(rng.randint(0, 200), rng.randint(200, 255), 0),
-            # color=pg.Color(200, group * (255 // SPECIES_AMOUNT), group * (255 // SPECIES_AMOUNT)),
+            velocity=pg.math.Vector2(rng.random() - 0.5, rng.random() - 0.5) * MAX_SPEED/4,
             group=group
+            # color=pg.Color(rng.randint(0, 200), rng.randint(200, 255), 0),
         )
         boids_group.add(boid)
 
@@ -52,11 +55,11 @@ def main():
         # Draw
         screen.blit(background, (0, 0))
         # screen.blit(bg, (0, 0))
+        
         #  Mark goals for pathfinding
         if BOID_FOLLOW_BEHAVIOUR == FOLLOW_PATH_LIST:
             for i in range(len(PATH_LIST)):
                 pg.draw.circle(screen, pg.Color(GOAL_COLOR), PATH_LIST[i], GLOAL_REACH_THRESHOLD)
-
         
         boids_group.draw(screen)
         pg.display.flip()
